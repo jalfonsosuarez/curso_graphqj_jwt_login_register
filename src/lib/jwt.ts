@@ -6,10 +6,19 @@ class JWT {
 
     private secretKey = process.env.SECRET_KEY || '@565Jxz.@bbc';
 
-    sign( data: IUser, expiresIn = process.env?.EXPIRATION_TIME || 10800 ): string {
+    sign( data: IUser, expiresIn = 10800 ): string {
 
         return jwt.sign( { user:data }, this.secretKey, { expiresIn } );
 
+    }
+
+    verify( token: string ): string {
+
+        try{
+            return jwt.verify( token, this.secretKey ) as string;
+        } catch ( e ) {
+            return 'Token no válido';
+        }
     }
 
 }

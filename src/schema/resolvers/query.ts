@@ -49,6 +49,24 @@ const queryResolvers: IResolvers = {
                         });
         },
 
+        me: ( _: void, ___: unknown, context: { token: string } ): IUserResponse => {
+
+            const info = new JWT().verify( context.token );
+            if ( info === 'Token no válido' ) {
+                return {
+                    status: false,
+                    message: info
+                };
+            }
+
+            return {
+                status: true,
+                message: 'Token correcto',
+                user: (info as unknown as { user: IUser } ).user
+            };
+
+        }
+
     }
 };
 
