@@ -32,6 +32,7 @@ class GraphQLServer {
   private initializeEnvironments() {
     if (process.env.NODE_ENV != 'production') {
       const envs = environments;
+      return envs;
     }
   }
 
