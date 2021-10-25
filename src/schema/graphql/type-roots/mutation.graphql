@@ -1,0 +1,7 @@
+
+type Mutation {
+    # Añadir usuario
+    add( user: UserInput! ): Boolean
+    # Modificar datos del usuario
+    update( user: UserInput! ): Boolean
+}

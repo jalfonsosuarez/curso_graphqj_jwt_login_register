@@ -3,15 +3,17 @@ import compression from 'compression';
 import express, { Application } from 'express';
 import { GraphQLSchema } from 'graphql';
 import { createServer, Server } from 'http';
+import environments from './config/environment';
 
 class GraphQLServer {
   // Propiedades
   private app!: Application;
   private httpServer!: Server;
-  private readonly DEFAULT_PORT = 3025;
+  private readonly DEFAULT_PORT = process.env.PORT || '3025';
   private schema!: GraphQLSchema;
 
   constructor( schema?: GraphQLSchema ) {
+    // this.DEFAULT_PORT = process?.env?.PORT || '3025';
     if ( !schema || schema === undefined ) {
         throw new Error( 'No se ha proporcionado el schema de GraphQL' );
     }
@@ -20,9 +22,16 @@ class GraphQLServer {
   }
 
   private init() {
+    this.initializeEnvironments();
     this.configExpress();
     this.configApolloServerExpress();
     this.configRoutes();
+  }
+
+  private initializeEnvironments() {
+    if (process.env.NODE_ENV != 'production') {
+      const envs = environments;
+    }
   }
 
   private configExpress() {
@@ -56,7 +65,7 @@ class GraphQLServer {
   listen(callback: (port: number) => void): void {
     this.init();
     this.httpServer.listen(this.DEFAULT_PORT, () => {
-      callback(this.DEFAULT_PORT);
+      callback( parseInt( this.DEFAULT_PORT ) );
     });
   }
 }

@@ -1,0 +1,9 @@
+
+type Query {
+    # Lista de usuarios
+    user: [User!]!
+    # Inicio de sesión
+    login( email: String!, password: String! ): String!
+    # Obtener datos de los usuarios con token jwt
+    me: String!
+}
