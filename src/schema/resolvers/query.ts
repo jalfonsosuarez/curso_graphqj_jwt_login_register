@@ -1,11 +1,52 @@
 import { IResolvers } from '@graphql-tools/utils';
-
+import { Db } from 'mongodb';
+import { IUser } from '../../interfaces/user.interface';
+import { IUserResponse } from '../../interfaces/userResponse.interface';
+import bcrypt from 'bcrypt';
 
 // Resolvers
 const queryResolvers: IResolvers = {
     Query: {
+        users: async ( _: void, __: unknown,  context: { db: Db } ): Promise<Array<IUser>> => {
+            return await context.db.collection( 'users' ).find().toArray() as Array<IUser>;
+        },
 
-    },
+        login: async ( _: void, args: { email: string, password: string }, context: { db: Db } ): Promise<IUserResponse> => {
+            return await context.db.collection( 'users' )
+                        .findOne(
+                            {
+                                email: args.email
+                            }
+                        )
+                        .then( ( user ) => {
+                            if ( !user ) {
+                                return {
+                                    status: false,
+                                    message: 'Usuario incorrecto'
+                                };
+                            }
+                            if ( !bcrypt.compareSync( args.password, user.password ) ) {
+                                return {
+                                    status: false,
+                                    message: 'Usuario incorrecto.'
+                                };
+                            }
+                            delete user?.id;
+                            return {
+                                status: true,
+                                message: 'Usuario encontrado',
+                                user: user as IUser
+                            };
+                        })
+                        .catch( ( error ) => {
+                            return {
+                                status: false,
+                                message: `No puede acceder ${error}`
+                            };
+                        });
+        },
+
+    }
 };
 
 export default queryResolvers;

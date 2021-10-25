@@ -5,5 +5,5 @@ input UserInput {
     lastName: String!
     email: String!
     password: String
-    regiterDate: String!    
+    regiterDate: String
 }

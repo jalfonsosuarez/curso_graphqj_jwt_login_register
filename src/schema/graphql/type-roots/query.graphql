@@ -1,13 +1,13 @@
 
 type Query {
     "Lista de usuarios"
-    user: [User!]!
+    users: [User!]!
     "Inicio de sesión"
     login( 
         "Email del usuario"
-        email: String!, 
+        email: String!,
         "Contraseña del usuario"
-        password: String! ): String!
+        password: String! ): ResultUser!
     "Obtener datos de los usuarios con token jwt"
-    me: String!
+    me: ResultUser!
 }

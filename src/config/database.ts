@@ -7,7 +7,7 @@ class Database {
     async init(): Promise<Db | undefined> {
         console.log( '===================== Database ====================='  );
         try {
-            const MONGODB = process.env.DATABASE || 'mongodb://localhost:27017/jwt-login-register-21';
+            const MONGODB = process.env.DATABASE || 'mongodb://root:123456@localhost:27017/jwt-login-register-21?authSource=admin';
             const mongoClient = await MongoClient.connect( MONGODB );
             this.db = mongoClient.db();
             console.log(`Status: ${chalk.greenBright('ON LINE')}`);
