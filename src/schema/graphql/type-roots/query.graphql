@@ -7,7 +7,7 @@ type Query {
         "Email del usuario"
         email: String!,
         "Contraseña del usuario"
-        password: String! ): ResultUser!
+        password: String! ): ResultToken!
     "Obtener datos de los usuarios con token jwt"
     me: ResultUser!
 }

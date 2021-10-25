@@ -3,6 +3,7 @@ import { Db } from 'mongodb';
 import { IUser } from '../../interfaces/user.interface';
 import { IUserResponse } from '../../interfaces/userResponse.interface';
 import bcrypt from 'bcrypt';
+import JWT from '../../lib/jwt';
 
 // Resolvers
 const queryResolvers: IResolvers = {
@@ -32,10 +33,12 @@ const queryResolvers: IResolvers = {
                                 };
                             }
                             delete user?.id;
+                            delete user?.password;
+                            delete user?.registerDate;
                             return {
                                 status: true,
                                 message: 'Usuario encontrado',
-                                user: user as IUser
+                                token: new JWT().sign( user as IUser )
                             };
                         })
                         .catch( ( error ) => {

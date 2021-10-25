@@ -30,7 +30,7 @@ const mutationResolvers: IResolvers = {
                             .find().limit( 1 ).sort( { registerDate: -1 } ).toArray();
 
             args.user.id = lastElement.length === 0 ? '1' :String( +lastElement[0].id + 1 );
-            args.user.regiterDate = new Date().toISOString();
+            args.user.registerDate = new Date().toISOString();
             args.user.password = bcrypt.hashSync( args.user.password, 10 );
 
             return await context.db.collection( 'users' ).insertOne( args.user )

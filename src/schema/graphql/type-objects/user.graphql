@@ -4,5 +4,5 @@ type User {
     lastName: String!
     email: String!
     password: String
-    regiterDate: String
+    registerDate: String
 }
