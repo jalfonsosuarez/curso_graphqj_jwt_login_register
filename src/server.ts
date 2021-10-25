@@ -4,6 +4,7 @@ import express, { Application } from 'express';
 import { GraphQLSchema } from 'graphql';
 import { createServer, Server } from 'http';
 import environments from './config/environment';
+import Database from './config/database';
 
 class GraphQLServer {
   // Propiedades
@@ -42,7 +43,15 @@ class GraphQLServer {
 
   private async configApolloServerExpress() {
 
+    const database = new Database();
+    const db = await database.init();
+
+    const context = async() => {
+      return { db };
+    };
+
     const apolloServer = new ApolloServer({
+      context,
       schema: this.schema,
       introspection: true,
     });
