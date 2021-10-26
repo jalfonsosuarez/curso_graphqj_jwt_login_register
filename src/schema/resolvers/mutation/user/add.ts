@@ -1,8 +1,9 @@
 import { Db } from 'mongodb';
 import { IResolvers } from '@graphql-tools/utils';
-import { IUser } from '../../interfaces/user.interface';
-import { IUserResponse } from '../../interfaces/userResponse.interface';
+import { IUser } from '../../../../interfaces/user.interface';
+import { IUserResponse } from '../../../../interfaces/userResponse.interface';
 import bcrypt from 'bcrypt';
+
 
 // Resolvers
 const mutationResolvers: IResolvers = {
@@ -37,18 +38,19 @@ const mutationResolvers: IResolvers = {
                             .then( () => {
                                 return {
                                     status: true,
-                                    message: 'Se ha añadido un nuevo usuario',
+                                    message: 'Se ha añadido un nuevo usuario.',
                                     user: args.user
                                 };
                             })
                             .catch( ( error ) => {
                                 return {
                                     status: false,
-                                    message: `Error: ${error}`
+                                    message: `Error: Usuario no actualizado. ${error}`
                                 };
                             });
 
-        }
+        },
+
     },
 };
 

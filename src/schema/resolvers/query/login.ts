@@ -1,17 +1,14 @@
 import { IResolvers } from '@graphql-tools/utils';
 import { Db } from 'mongodb';
-import { IUser } from '../../interfaces/user.interface';
-import { IUserResponse } from '../../interfaces/userResponse.interface';
+import { IUser } from '../../../interfaces/user.interface';
+import { IUserResponse } from '../../../interfaces/userResponse.interface';
 import bcrypt from 'bcrypt';
-import JWT from '../../lib/jwt';
+import JWT from '../../../lib/jwt';
+
 
 // Resolvers
 const queryResolvers: IResolvers = {
     Query: {
-        users: async ( _: void, __: unknown,  context: { db: Db } ): Promise<Array<IUser>> => {
-            return await context.db.collection( 'users' ).find().toArray() as Array<IUser>;
-        },
-
         login: async ( _: void, args: { email: string, password: string }, context: { db: Db } ): Promise<IUserResponse> => {
             return await context.db.collection( 'users' )
                         .findOne(
@@ -32,7 +29,6 @@ const queryResolvers: IResolvers = {
                                     message: 'Usuario incorrecto.'
                                 };
                             }
-                            delete user?.id;
                             delete user?.password;
                             delete user?.registerDate;
                             return {
@@ -48,25 +44,6 @@ const queryResolvers: IResolvers = {
                             };
                         });
         },
-
-        me: ( _: void, ___: unknown, context: { token: string } ): IUserResponse => {
-
-            const info = new JWT().verify( context.token );
-            if ( info === 'Token no válido' ) {
-                return {
-                    status: false,
-                    message: info
-                };
-            }
-
-            return {
-                status: true,
-                message: 'Token correcto',
-                user: (info as unknown as { user: IUser } ).user
-            };
-
-        }
-
     }
 };
 
