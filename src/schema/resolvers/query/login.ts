@@ -30,7 +30,6 @@ const queryResolvers: IResolvers = {
                                 };
                             }
                             delete user?.password;
-                            delete user?.registerDate;
                             return {
                                 status: true,
                                 message: 'Usuario encontrado',
